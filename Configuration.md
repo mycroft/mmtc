@@ -87,6 +87,7 @@ variant | struct, tuple or unit | fields (separated by comma) | description
 `Styled(styles, texts)` | tuple | list of [`Style`](#Style), [`Texts`](#Texts) | styled text
 `Parts(parts)` | tuple | list of [`Texts`](#Texts) | concatenate multiple parts of texts
 `If(condition, lhs, rhs)` or `If(condition, lhs)` | tuple | [`Condition`](#Condition), [`Texts`](#Texts), optional [`Texts`](#Texts) | if `condition` then `lhs` (else `rhs`)
+`CurrentVolume` | unit | | current volume level in %
 
 ### Style
 
@@ -167,6 +168,7 @@ variant | struct, tuple or unit | fields (separated by comma) | description
 `And(lhs, rhs)` | tuple | [`Condition`](#Condition), [`Condition`](#Condition) | logical and
 `Or(lhs, rhs)` | tuple | [`Condition`](#Condition), [`Condition`](#Condition) | logical or
 `Xor(lhs, rhs)` | tuple | [`Condition`](#Condition), [`Condition`](#Condition) | logical exclusive or
+`VolumeMuted` | unit | | true if current volume is 0
 
 ### Column
 

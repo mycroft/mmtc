@@ -512,13 +512,13 @@ async fn run() -> Result<()> {
                     cl.command(b"volume +1")
                         .await
                         .context("Failed to increase volume")?;
-                    0b100
+                    0b101
                 }
                 Command::VolumeDecrease => {
                     cl.command(b"volume -1")
                         .await
                         .context("Failed to decrease volume")?;
-                    0b100
+                    0b101
                 }
                 Command::VolumeToggle => {
                     let current_volume = s.status.volume;
@@ -533,7 +533,7 @@ async fn run() -> Result<()> {
                         .context("Failed to mute/unmute volume")?;
 
                     last_volume = current_volume;
-                    0b100
+                    0b101
                 }
             }) | updates.swap(0b000, Ordering::SeqCst)
         } else {

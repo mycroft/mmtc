@@ -432,6 +432,9 @@ fn _flatten<'a>(spans: &mut Vec<Span<'a>>, xs: &'a Texts, s: &FlattenState<'a, '
                 _flatten(spans, xs, s);
             }
         }
+        Texts::CurrentVolume => {
+            spans.push(Span::styled(format!("{}", s.status.volume), *s.style));
+        }
     }
 }
 
@@ -532,5 +535,6 @@ fn eval_cond(cond: &Condition, s: &ConditionState) -> bool {
         Condition::And(x, y) => eval_cond(x, s) && eval_cond(y, s),
         Condition::Or(x, y) => eval_cond(x, s) || eval_cond(y, s),
         Condition::Xor(x, y) => eval_cond(x, s) ^ eval_cond(y, s),
+        Condition::VolumeMuted => s.status.volume == 0,
     }
 }

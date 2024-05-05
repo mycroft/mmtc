@@ -59,29 +59,43 @@ Config(
                     Styled([Fg(Indexed(185))], Query),
                     Styled([Fg(Indexed(185))], Text("⎸")),
                 ]),
-                If(Not(Stopped), Parts([
-                    Styled([Fg(Indexed(113))], Parts([
-                        If(Playing, Text("[playing: "), Text("[paused:  ")),
-                        CurrentElapsed,
-                        Text("/"),
-                        CurrentDuration,
-                        Text("] "),
-                    ])),
-                    If(TitleExist,
-                        Parts([
-                            Styled([Fg(Indexed(149))], CurrentTitle),
-                            If(ArtistExist, Parts([
-                                Styled([Fg(Indexed(216))], Text(" ◆ ")),
-                                Styled([Fg(Indexed(185))], CurrentArtist),
-                                If(AlbumExist, Parts([
+                Parts([
+                    Parts([
+                        Styled([Fg(Indexed(113))], Text("[")),
+                        If(VolumeMuted,
+                            Styled([Fg(Indexed(113))], Text("muted")),
+                            Parts([
+                                Styled([Fg(Indexed(113))], Text("vol: ")),
+                                Styled([Fg(Indexed(113))], CurrentVolume),
+                                Styled([Fg(Indexed(113))], Text("%")),
+                            ]),
+                        ),
+                        Styled([Fg(Indexed(113))], Text("]")),
+                    ]),
+                    If(Not(Stopped), Parts([
+                        Styled([Fg(Indexed(113))], Parts([
+                            If(Playing, Text("[playing: "), Text("[paused:  ")),
+                            CurrentElapsed,
+                            Text("/"),
+                            CurrentDuration,
+                            Text("] "),
+                        ])),
+                        If(TitleExist,
+                            Parts([
+                                Styled([Fg(Indexed(149))], CurrentTitle),
+                                If(ArtistExist, Parts([
                                     Styled([Fg(Indexed(216))], Text(" ◆ ")),
-                                    Styled([Fg(Indexed(221))], CurrentAlbum),
+                                    Styled([Fg(Indexed(185))], CurrentArtist),
+                                    If(AlbumExist, Parts([
+                                        Styled([Fg(Indexed(216))], Text(" ◆ ")),
+                                        Styled([Fg(Indexed(221))], CurrentAlbum),
+                                    ])),
                                 ])),
-                            ])),
-                        ]),
-                        Styled([Fg(Indexed(185))], CurrentFile),
-                    ),
-                ])),
+                            ]),
+                            Styled([Fg(Indexed(185))], CurrentFile),
+                        ),
+                    ])),
+                ])
             )))),
             Fixed(7, TextboxR(Styled([Fg(Indexed(81))], Parts([
                 Text("["),

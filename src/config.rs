@@ -80,6 +80,7 @@ pub enum Texts {
     Styled(Vec<AddStyle>, Box<Texts>),
     Parts(Vec<Texts>),
     If(Condition, Box<Texts>, Option<Box<Texts>>),
+    CurrentVolume,
 }
 
 #[derive(Deserialize)]
@@ -128,6 +129,7 @@ pub enum Condition {
     And(Box<Condition>, Box<Condition>),
     Or(Box<Condition>, Box<Condition>),
     Xor(Box<Condition>, Box<Condition>),
+    VolumeMuted,
 }
 
 #[derive(Deserialize)]
@@ -172,6 +174,7 @@ impl<'de> Deserialize<'de> for Texts {
                     Styled,
                     Parts,
                     If,
+                    CurrentVolume,
                 }
 
                 struct StyledVisitor;
@@ -245,6 +248,7 @@ impl<'de> Deserialize<'de> for Texts {
                     Variant::Styled => va.tuple_variant(2, StyledVisitor),
                     Variant::Parts => Ok(Texts::Parts(va.newtype_variant()?)),
                     Variant::If => va.tuple_variant(3, IfVisitor),
+                    Variant::CurrentVolume => unit_variant!(CurrentVolume),
                 }
             }
         }
