@@ -189,75 +189,112 @@ pub fn layout() -> Widget {
                                     Box::new(Texts::Text(String::from("⎸"))),
                                 ),
                             ])),
-                            Some(Box::new(Texts::If(
-                                Condition::Not(Box::new(Condition::Stopped)),
-                                Box::new(Texts::Parts(vec![
+                            Some(Box::new(Texts::Parts(vec![
+                                Texts::Parts(vec![
                                     Texts::Styled(
                                         vec![AddStyle::Fg(Color::Indexed(113))],
-                                        Box::new(Texts::Parts(vec![
-                                            Texts::If(
-                                                Condition::Playing,
-                                                Box::new(Texts::Text(String::from("[playing: "))),
-                                                Some(Box::new(Texts::Text(String::from(
-                                                    "[paused:  ",
-                                                )))),
-                                            ),
-                                            Texts::CurrentElapsed,
-                                            Texts::Text(String::from("/")),
-                                            Texts::CurrentDuration,
-                                            Texts::Text(String::from("] ")),
-                                        ])),
+                                        Box::new(Texts::Text(String::from("["))),
                                     ),
                                     Texts::If(
-                                        Condition::TitleExist,
-                                        Box::new(Texts::Parts(vec![
+                                        Condition::VolumeMuted,
+                                        Box::new(Texts::Styled(
+                                            vec![AddStyle::Fg(Color::Indexed(113))],
+                                            Box::new(Texts::Text(String::from("muted"))),
+                                        )),
+                                        Some(Box::new(Texts::Parts(vec![
                                             Texts::Styled(
-                                                vec![AddStyle::Fg(Color::Indexed(149))],
-                                                Box::new(Texts::CurrentTitle),
+                                                vec![AddStyle::Fg(Color::Indexed(113))],
+                                                Box::new(Texts::Text(String::from("vol: "))),
                                             ),
-                                            Texts::If(
-                                                Condition::ArtistExist,
-                                                Box::new(Texts::Parts(vec![
-                                                    Texts::Styled(
-                                                        vec![AddStyle::Fg(Color::Indexed(216))],
-                                                        Box::new(Texts::Text(String::from(" ◆ "))),
-                                                    ),
-                                                    Texts::Styled(
-                                                        vec![AddStyle::Fg(Color::Indexed(185))],
-                                                        Box::new(Texts::CurrentArtist),
-                                                    ),
-                                                    Texts::If(
-                                                        Condition::AlbumExist,
-                                                        Box::new(Texts::Parts(vec![
-                                                            Texts::Styled(
-                                                                vec![AddStyle::Fg(Color::Indexed(
-                                                                    216,
-                                                                ))],
-                                                                Box::new(Texts::Text(
-                                                                    String::from(" ◆ "),
-                                                                )),
-                                                            ),
-                                                            Texts::Styled(
-                                                                vec![AddStyle::Fg(Color::Indexed(
-                                                                    221,
-                                                                ))],
-                                                                Box::new(Texts::CurrentAlbum),
-                                                            ),
-                                                        ])),
-                                                        None,
-                                                    ),
-                                                ])),
-                                                None,
+                                            Texts::Styled(
+                                                vec![AddStyle::Fg(Color::Indexed(113))],
+                                                Box::new(Texts::CurrentVolume),
                                             ),
-                                        ])),
-                                        Some(Box::new(Texts::Styled(
-                                            vec![AddStyle::Fg(Color::Indexed(185))],
-                                            Box::new(Texts::CurrentFile),
-                                        ))),
+                                            Texts::Styled(
+                                                vec![AddStyle::Fg(Color::Indexed(113))],
+                                                Box::new(Texts::Text(String::from("%"))),
+                                            ),
+                                        ]))),
                                     ),
-                                ])),
-                                None,
-                            ))),
+                                    Texts::Styled(
+                                        vec![AddStyle::Fg(Color::Indexed(113))],
+                                        Box::new(Texts::Text(String::from("]"))),
+                                    ),
+                                ]),
+                                Texts::If(
+                                    Condition::Not(Box::new(Condition::Stopped)),
+                                    Box::new(Texts::Parts(vec![
+                                        Texts::Styled(
+                                            vec![AddStyle::Fg(Color::Indexed(113))],
+                                            Box::new(Texts::Parts(vec![
+                                                Texts::If(
+                                                    Condition::Playing,
+                                                    Box::new(Texts::Text(String::from(
+                                                        "[playing: ",
+                                                    ))),
+                                                    Some(Box::new(Texts::Text(String::from(
+                                                        "[paused:  ",
+                                                    )))),
+                                                ),
+                                                Texts::CurrentElapsed,
+                                                Texts::Text(String::from("/")),
+                                                Texts::CurrentDuration,
+                                                Texts::Text(String::from("] ")),
+                                            ])),
+                                        ),
+                                        Texts::If(
+                                            Condition::TitleExist,
+                                            Box::new(Texts::Parts(vec![
+                                                Texts::Styled(
+                                                    vec![AddStyle::Fg(Color::Indexed(149))],
+                                                    Box::new(Texts::CurrentTitle),
+                                                ),
+                                                Texts::If(
+                                                    Condition::ArtistExist,
+                                                    Box::new(Texts::Parts(vec![
+                                                        Texts::Styled(
+                                                            vec![AddStyle::Fg(Color::Indexed(216))],
+                                                            Box::new(Texts::Text(String::from(
+                                                                " ◆ ",
+                                                            ))),
+                                                        ),
+                                                        Texts::Styled(
+                                                            vec![AddStyle::Fg(Color::Indexed(185))],
+                                                            Box::new(Texts::CurrentArtist),
+                                                        ),
+                                                        Texts::If(
+                                                            Condition::AlbumExist,
+                                                            Box::new(Texts::Parts(vec![
+                                                                Texts::Styled(
+                                                                    vec![AddStyle::Fg(
+                                                                        Color::Indexed(216),
+                                                                    )],
+                                                                    Box::new(Texts::Text(
+                                                                        String::from(" ◆ "),
+                                                                    )),
+                                                                ),
+                                                                Texts::Styled(
+                                                                    vec![AddStyle::Fg(
+                                                                        Color::Indexed(221),
+                                                                    )],
+                                                                    Box::new(Texts::CurrentAlbum),
+                                                                ),
+                                                            ])),
+                                                            None,
+                                                        ),
+                                                    ])),
+                                                    None,
+                                                ),
+                                            ])),
+                                            Some(Box::new(Texts::Styled(
+                                                vec![AddStyle::Fg(Color::Indexed(185))],
+                                                Box::new(Texts::CurrentFile),
+                                            ))),
+                                        ),
+                                    ])),
+                                    None,
+                                ),
+                            ]))),
                         )),
                     )),
                 ),
