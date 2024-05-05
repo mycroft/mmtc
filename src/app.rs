@@ -40,6 +40,9 @@ pub enum Command {
     ClearSearch,
     QuitSearch,
     Searching(bool),
+    VolumeIncrease,
+    VolumeDecrease,
+    VolumeToggle,
 }
 
 impl State {

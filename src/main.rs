@@ -8,6 +8,7 @@ mod layout;
 mod mpd;
 
 use std::{
+    borrow::Cow,
     cmp::min,
     env, fs,
     io::stdout,
@@ -161,6 +162,8 @@ async fn run() -> Result<()> {
     let seek_forwards = seek_forwards.as_bytes();
     let update_interval = Duration::from_secs_f32(1.0 / opts.ups.unwrap_or(cfg.ups));
 
+    let mut last_volume = s.status.volume;
+
     let t1 = thread::current();
     let t2 = Thread::clone(&t1);
     let t3 = Thread::clone(&t1);
@@ -274,6 +277,9 @@ async fn run() -> Result<()> {
                         'K' => Command::JumpUp,
                         'g' => Command::GotoTop,
                         'G' => Command::GotoBottom,
+                        '-' => Command::VolumeDecrease,
+                        '+' => Command::VolumeIncrease,
+                        'm' => Command::VolumeToggle,
                         '/' => {
                             searching = true;
                             Command::Searching(true)
@@ -501,6 +507,33 @@ async fn run() -> Result<()> {
                 Command::Searching(x) => {
                     s.searching = x;
                     0b001
+                }
+                Command::VolumeIncrease => {
+                    cl.command(b"volume +1")
+                        .await
+                        .context("Failed to increase volume")?;
+                    0b100
+                }
+                Command::VolumeDecrease => {
+                    cl.command(b"volume -1")
+                        .await
+                        .context("Failed to decrease volume")?;
+                    0b100
+                }
+                Command::VolumeToggle => {
+                    let current_volume = s.status.volume;
+                    let command = if current_volume > 0 {
+                        Cow::<String>::Owned(format!("volume -100"))
+                    } else {
+                        Cow::Owned(format!("volume +{}", last_volume))
+                    };
+
+                    cl.command(command.to_owned().as_bytes())
+                        .await
+                        .context("Failed to mute/unmute volume")?;
+
+                    last_volume = current_volume;
+                    0b100
                 }
             }) | updates.swap(0b000, Ordering::SeqCst)
         } else {

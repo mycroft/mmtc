@@ -32,6 +32,7 @@ pub struct Status {
     pub queue_len: usize,
     pub state: PlayerState,
     pub song: Option<Song>,
+    pub volume: usize,
 }
 
 #[derive(Debug)]
@@ -207,6 +208,7 @@ impl Client {
             let mut state = PlayerState::Stop;
             let mut pos = None;
             let mut elapsed = None;
+            let mut volume = None;
 
             self.w.write_all(b"status\n").await?;
             let mut lines = (&mut self.r).lines();
@@ -231,12 +233,19 @@ impl Client {
                     expand!([@b"elapsed: ", ..]) => {
                         elapsed = Some(line[9 ..].parse::<f32>()?.round() as u16)
                     }
+                    expand!([@b"volume: ", ..]) => volume = Some(line[8 ..].parse()?),
                     _ => continue,
                 }
             }
 
-            if let (Some(repeat), Some(random), Some(single), Some(consume), Some(queue_len)) =
-                (repeat, random, single, consume, queue_len)
+            if let (
+                Some(repeat),
+                Some(random),
+                Some(single),
+                Some(consume),
+                Some(queue_len),
+                Some(volume),
+            ) = (repeat, random, single, consume, queue_len, volume)
             {
                 Ok(Status {
                     repeat,
@@ -250,6 +259,7 @@ impl Client {
                     } else {
                         None
                     },
+                    volume,
                 })
             } else {
                 bail!("incomplete status response");

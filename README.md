@@ -92,6 +92,9 @@ Key | Action
 <kbd>/</kbd> | enter searching mode
 <kbd>Ctrl</kbd> + <kbd>u</kbd> | empty search query
 <kbd>Escape</kbd> | quit searching mode and empty query
+<kbd>+</kbd> | increase volume
+<kbd>-</kbd> | decrease volume
+<kbd>m</kbd> | mute/unmute volume
 
 
 ## Configuration
